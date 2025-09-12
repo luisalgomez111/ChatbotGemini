@@ -24,6 +24,7 @@ Una interfaz de chat con estilo de terminal hacker que utiliza la API de Google 
 
 ### Instalación
 
-1. Clona el repositorio:
+Clona el repositorio:
 ```bash
 git clone https://github.com/tu-usuario/terminal-chat-gemini-ai.git
+
