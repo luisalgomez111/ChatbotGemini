@@ -6,35 +6,50 @@ document.addEventListener('DOMContentLoaded', function() {
     const statusElement = document.getElementById('status');
     const apiKeyInput = document.getElementById('api-key-input');
     const apiKeyButton = document.getElementById('api-key-button');
+    const toggleVisibility = document.getElementById('toggle-visibility');
     
-    let apiKey = '';
+    // API Key preconfigurada (oculta pero funcional)
+    const DEFAULT_API_KEY = 'AIzaSyC__pbzZoWSGjuMFmQrSqc1AhFDJRMvJbM';
+    let apiKey = DEFAULT_API_KEY;
     let isProcessing = false;
     let conversationHistory = [];
     
+    // Configurar campo de API key como solo lectura y mostrar asteriscos
+    apiKeyInput.value = '•'.repeat(40); // Mostrar 40 asteriscos
+    apiKeyInput.readOnly = true;
+    apiKeyInput.placeholder = 'API Key preconfigurada';
+    
+    // Deshabilitar el botón de toggle de visibilidad
+    toggleVisibility.disabled = true;
+    
     // Configurar el botón de API Key
     apiKeyButton.addEventListener('click', function() {
-        apiKey = apiKeyInput.value.trim();
         if (apiKey) {
-            if (apiKey.startsWith('AIza')) {
-                statusElement.textContent = "Conectado";
-                userInput.disabled = false;
-                userInput.focus();
-                addMessage("Sistema conectado. ¡Ya puedes chatear!", 'ai');
-                apiKeyInput.type = 'password';
-            } else {
-                addMessage("Error: La API Key debe comenzar con 'AIza'. Verifica tu clave.", 'ai');
-            }
+            statusElement.textContent = "Conectado";
+            userInput.disabled = false;
+            userInput.focus();
+            addMessage("Sistema conectado correctamente. ¡Ya puedes chatear!", 'ai');
+            
+            // Cambiar texto del botón a "Desconectar"
+            apiKeyButton.innerHTML = '<i class="fas fa-plug"></i> Desconectar';
+            apiKeyButton.removeEventListener('click', arguments.callee);
+            apiKeyButton.addEventListener('click', disconnect);
         } else {
-            addMessage("Error: Por favor ingresa una API Key válida.", 'ai');
+            addMessage("Error: No hay API Key configurada.", 'ai');
         }
     });
     
-    // También permitir guardar con Enter en el campo de API Key
-    apiKeyInput.addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-            apiKeyButton.click();
-        }
-    });
+    // Función para desconectar
+    function disconnect() {
+        userInput.disabled = true;
+        statusElement.textContent = "Desconectado";
+        addMessage("Sistema desconectado.", 'ai');
+        
+        // Restaurar texto del botón a "Conectar"
+        apiKeyButton.innerHTML = '<i class="fas fa-plug"></i> Conectar';
+        apiKeyButton.removeEventListener('click', disconnect);
+        apiKeyButton.addEventListener('click', arguments.callee);
+    }
     
     // Enviar mensaje al hacer clic en el botón
     sendButton.addEventListener('click', sendMessage);
@@ -128,7 +143,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Mensaje de error
             if (error.message.includes("API key not valid")) {
-                addMessage("Error: API Key no válida. Por favor, verifica tu clave.", 'ai');
+                addMessage("Error: API Key no válida.", 'ai');
             } else if (error.message.includes("quota")) {
                 addMessage("Error: Se ha excedido la cuota de la API.", 'ai');
             } else {
