@@ -22,9 +22,26 @@ Una interfaz de chat con estilo de terminal hacker que utiliza la API de Google 
 - Un navegador web moderno (Chrome, Firefox, Safari, Edge)
 - Una API Key de Google Gemini (opcional, viene con una preconfigurada)
 
+##📄 Licencia
+
+Este proyecto está bajo la Licencia MIT.
+
+##Luis Alberto Gomez
+
+    Email: luisalbertogomez111@gmail.com
+
+    GitHub: @luisalgomez111
+
+    PayPal: @LGomez1991
+
+##☕ Donaciones
+
+Si este proyecto te resulta útil, considera hacer una donación para apoyar su desarrollo:
+
+https://img.shields.io/badge/Donate-PayPal-blue.svg
+
 ### Instalación
 
 Clona el repositorio:
 ```bash
 git clone https://github.com/tu-usuario/terminal-chat-gemini-ai.git
-
