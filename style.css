@@ -1,0 +1,398 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Courier New', monospace;
+}
+
+body {
+    background: #0a0e14;
+    color: #00ff00;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    overflow: hidden;
+}
+
+.container {
+    width: 100%;
+    max-width: 900px;
+    height: 95vh;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.terminal {
+    width: 100%;
+    background-color: #0a0e14;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    border: 1px solid #00ff00;
+}
+
+.terminal-header {
+    background: #0a0e14;
+    color: #00ff00;
+    padding: 12px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #00ff00;
+    flex-shrink: 0;
+}
+
+.terminal-controls {
+    display: flex;
+}
+
+.control {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-left: 8px;
+}
+
+.close {
+    background-color: #ff5f56;
+}
+
+.minimize {
+    background-color: #ffbd2e;
+}
+
+.maximize {
+    background-color: #27c93f;
+}
+
+.terminal-body {
+    flex: 1;
+    padding: 15px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background: rgba(10, 14, 20, 0.95);
+}
+
+.message {
+    line-height: 1.4;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.user-message {
+    color: #00ff00;
+    align-self: flex-end;
+    background: rgba(0, 80, 0, 0.15);
+    padding: 8px 12px;
+    border-radius: 8px;
+    max-width: 80%;
+    word-wrap: break-word;
+}
+
+.ai-message {
+    color: #00cc66;
+    align-self: flex-start;
+    background: rgba(0, 60, 0, 0.15);
+    padding: 8px 12px;
+    border-radius: 8px;
+    max-width: 80%;
+    word-wrap: break-word;
+}
+
+.input-container {
+    padding: 15px;
+    border-top: 1px solid #00ff00;
+    background: #0a0e14;
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.terminal-input {
+    flex: 1;
+    background: rgba(0, 30, 0, 0.3);
+    border: 1px solid #00aa00;
+    color: #00ff00;
+    font-size: 1rem;
+    outline: none;
+    padding: 10px 15px;
+    border-radius: 20px;
+    font-family: 'Courier New', monospace;
+}
+
+.send-button {
+    background: #00aa00;
+    color: #000;
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-left: 10px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.terminal-footer {
+    padding: 8px 15px;
+    border-top: 1px solid #00ff00;
+    background: #0a0e14;
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    color: #008800;
+    flex-shrink: 0;
+}
+
+.typing-indicator {
+    color: #008800;
+    font-style: italic;
+    display: none;
+    padding: 5px 15px;
+}
+
+.header-text {
+    text-align: center;
+    flex: 1;
+    font-size: 1.1rem;
+}
+
+/* Estilos para bloques de código */
+.code-block {
+    position: relative;
+    background: #1a1a1a;
+    border: 1px solid #00aa00;
+    border-radius: 5px;
+    padding: 12px;
+    margin: 8px 0;
+    overflow-x: auto;
+}
+
+.code-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #00aa00;
+}
+
+.code-language {
+    color: #00ff00;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.code-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.code-btn {
+    background: #003300;
+    color: #00ff00;
+    border: 1px solid #00aa00;
+    padding: 4px 8px;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 0.75rem;
+    transition: all 0.3s;
+}
+
+.code-btn:hover {
+    background: #00aa00;
+    color: #000;
+}
+
+.code-content {
+    color: #ffffff;
+    white-space: pre-wrap;
+    font-family: 'Courier New', monospace;
+    line-height: 1.4;
+    font-size: 0.9rem;
+}
+
+/* Efectos de terminal tipo hacker */
+.scan-line {
+    position: absolute;
+    height: 2px;
+    width: 100%;
+    background: linear-gradient(to bottom, transparent, rgba(0, 255, 0, 0.2), transparent);
+    animation: scan 8s linear infinite;
+    pointer-events: none;
+    z-index: 2;
+}
+
+@keyframes scan {
+    0% { top: 0%; }
+    100% { top: 100%; }
+}
+
+.glow-effect {
+    text-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00, 0 0 15px #00ff00;
+}
+
+.api-key-container {
+    color: #00aa00;
+    background: rgba(0, 30, 0, 0.3);
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #00aa00;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex-shrink: 0;
+}
+
+.api-key-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: bold;
+}
+
+.api-key-input-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.api-key-input {
+    background: rgba(0, 20, 0, 0.5);
+    border: 1px solid #00aa00;
+    color: #00ff00;
+    padding: 10px 45px 10px 12px;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    width: 100%;
+}
+
+.toggle-visibility {
+    position: absolute;
+    right: 5px;
+    background: transparent;
+    border: none;
+    color: #00aa00;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 3px;
+}
+
+.toggle-visibility:hover {
+    background: rgba(0, 170, 0, 0.2);
+}
+
+.api-key-button {
+    background: #00aa00;
+    color: #000;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background 0.3s;
+}
+
+.api-key-button:hover {
+    background: #00ff00;
+}
+
+.api-key-info {
+    font-size: 0.8rem;
+    opacity: 0.8;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.api-key-button.disconnect {
+    background: #aa5500;
+}
+
+.api-key-button.disconnect:hover {
+    background: #ff7700;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .container {
+        height: 100vh;
+        padding: 10px;
+    }
+    
+    .terminal-header {
+        padding: 10px 15px;
+    }
+    
+    .header-text {
+        font-size: 0.9rem;
+    }
+    
+    .user-message, .ai-message {
+        max-width: 90%;
+    }
+    
+    .code-actions {
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .api-key-container {
+        padding: 12px;
+    }
+}
+
+/* Añadir estas reglas al archivo CSS existente */
+
+.api-key-input-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.api-key-input {
+    background: rgba(0, 20, 0, 0.5);
+    border: 1px solid #00aa00;
+    color: #00ff00;
+    padding: 10px 45px 10px 12px;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    width: 100%;
+    letter-spacing: 2px; /* Espaciado para los asteriscos */
+    user-select: none; /* Prevenir selección de texto */
+    cursor: not-allowed; /* Indicar que no es editable */
+}
+
+.toggle-visibility:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.api-key-info {
+    font-size: 0.8rem;
+    opacity: 0.8;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: #00cc66; /* Color más suave para el mensaje informativo */
+}
