@@ -135,7 +135,7 @@ Este proyecto está bajo la Licencia MIT. Ver el archivo [LICENSE](LICENSE) para
 
 **Luis Alberto Gómez**
 - 📧 Email: luisalbertogomez111@gmail.com
-- 🐙 GitHub: [@tu-usuario](https://github.com/tu-usuario)
+- 🐙 GitHub: [@luisalgomez111](https://github.com/tu-usuario)
 
 ---
 
