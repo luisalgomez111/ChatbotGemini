@@ -1,3 +1,4 @@
+<!-- index.html -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -8,30 +9,11 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="scan-line"></div>
-    
+    <!-- Contenedor principal -->
     <div class="container">
-        <div class="api-key-container">
-            <div class="api-key-label">
-                <i class="fas fa-key"></i>
-                API Key de Google Gemini:
-            </div>
-            <div class="api-key-input-container">
-                <input type="password" class="api-key-input" id="api-key-input" placeholder="API Key preconfigurada" readonly>
-                <button class="toggle-visibility" id="toggle-visibility" disabled>
-                    <i class="fas fa-eye-slash"></i>
-                </button>
-            </div>
-            <button class="api-key-button" id="api-key-button">
-                <i class="fas fa-plug"></i> Conectar
-            </button>
-            <div class="api-key-info">
-                <i class="fas fa-info-circle"></i>
-                API Key preconfigurada. Modo seguro activado.
-            </div>
-        </div>
-        
+        <!-- Terminal de chat -->
         <div class="terminal">
+            <!-- Cabecera de la terminal -->
             <div class="terminal-header">
                 <div class="terminal-controls">
                     <div class="control close"></div>
@@ -39,19 +21,37 @@
                     <div class="control maximize"></div>
                 </div>
                 <div class="header-text">gemini-terminal-chat</div>
-                <div style="width: 60px;"></div>
-            </div>
-            
-            <div class="terminal-body" id="terminal-body">
-                <div class="message ai-message">
-                    <span>Sistema inicializado. API Key preconfigurada. Presiona "Conectar" para comenzar.</span>
+                <div class="header-actions">
+                    <select class="model-selector" id="model-selector" title="Seleccionar modelo de IA">
+                        <option value="gemini-2.0-flash">Gemini 2.0 Flash</option>
+                        <option value="gemini-1.5-flash">Gemini 1.5 Flash</option>
+                        <option value="gemini-1.5-pro">Gemini 1.5 Pro</option>
+                        <option value="gemini-1.0-pro">Gemini 1.0 Pro</option>
+                    </select>
+                    <input type="file" class="file-input" id="file-input" accept=".txt,.pdf,.doc,.docx,.jpg,.jpeg,.png,.gif,.mp4,.mp3,.wav,.py,.js,.html,.css,.json,.xml,.csv,.md" multiple style="display: none;">
+                    <button class="file-upload-btn" id="file-upload-btn" title="Cargar archivos">
+                        <i class="fas fa-paperclip"></i>
+                    </button>
+                    <button class="clear-chat" id="clear-chat" title="Limpiar chat">
+                        <i class="fas fa-trash"></i>
+                    </button>
                 </div>
             </div>
             
-            <div class="typing-indicator" id="typing-indicator">
-                <span>gemini-ai está escribiendo...</span>
+            <!-- Cuerpo de la terminal donde se muestran los mensajes -->
+            <div class="terminal-body" id="terminal-body">
+                <!-- Mensaje inicial del sistema -->
+                <div class="message ai-message">
+                    <span>Conectando con Gemini AI...</span>
+                </div>
             </div>
             
+            <!-- Indicador de que la IA está escribiendo -->
+            <div class="typing-indicator" id="typing-indicator">
+                <span>gemini-ai está procesando tu solicitud...</span>
+            </div>
+            
+            <!-- Contenedor de entrada de texto -->
             <div class="input-container">
                 <input type="text" class="terminal-input" id="user-input" placeholder="Escribe tu mensaje aquí..." disabled>
                 <button class="send-button" id="send-button">
@@ -59,14 +59,41 @@
                 </button>
             </div>
             
+            <!-- Pie de la terminal con información de estado -->
             <div class="terminal-footer">
-                <div>Status: <span id="status">Desconectado</span></div>
-                <div>Modo: Seguro</div>
-                <div>v2.0-flash</div>
+                <div>Status: <span id="status">Conectando...</span></div>
+                <div>Modelo: <span id="current-model">Gemini 2.0 Flash</span></div>
+                <div>© 2025 Luis Alberto Gómez</div>
             </div>
         </div>
     </div>
 
+    <!-- Modal para comentarios de archivos -->
+    <div class="file-modal" id="file-modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-paperclip"></i> Archivos Cargados</h3>
+                <button class="close-modal" id="close-modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="files-list" id="files-list">
+                    <!-- Lista de archivos se llenará dinámicamente -->
+                </div>
+                <div class="comment-section">
+                    <label for="file-comment">Comentario o instrucciones:</label>
+                    <textarea id="file-comment" placeholder="Describe qué quieres que haga con estos archivos..."></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="cancel-btn" id="cancel-upload">Cancelar</button>
+                <button class="send-btn" id="send-files">Enviar con Comentario</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Script principal de la aplicación -->
     <script src="script.js" defer></script>
 </body>
 </html>

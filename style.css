@@ -1,3 +1,5 @@
+/* style.css */
+/* Estilos generales */
 * {
     margin: 0;
     padding: 0;
@@ -6,393 +8,724 @@
 }
 
 body {
-    background: #0a0e14;
+    background-color: #0a0a0a;
     color: #00ff00;
+    min-height: 100vh;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Contenedor principal */
+.container {
+    width: 100%;
+    max-width: 1200px;
     height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 20px;
-    overflow: hidden;
 }
 
-.container {
-    width: 100%;
-    max-width: 900px;
-    height: 95vh;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
+/* Terminal de chat */
 .terminal {
-    width: 100%;
-    background-color: #0a0e14;
-    border-radius: 8px;
+    background-color: #001100;
+    border: 2px solid #00aa00;
+    border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
     display: flex;
     flex-direction: column;
+    width: 100%;
     height: 100%;
-    border: 1px solid #00ff00;
+    max-height: 90vh;
 }
 
 .terminal-header {
-    background: #0a0e14;
-    color: #00ff00;
-    padding: 12px 20px;
+    background-color: #002200;
+    padding: 15px 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid #00ff00;
+    border-bottom: 2px solid #00aa00;
     flex-shrink: 0;
 }
 
 .terminal-controls {
     display: flex;
+    gap: 10px;
 }
 
 .control {
-    width: 12px;
-    height: 12px;
+    width: 14px;
+    height: 14px;
     border-radius: 50%;
-    margin-left: 8px;
 }
 
-.close {
+.control.close {
     background-color: #ff5f56;
 }
 
-.minimize {
+.control.minimize {
     background-color: #ffbd2e;
 }
 
-.maximize {
+.control.maximize {
     background-color: #27c93f;
+}
+
+.header-text {
+    flex: 1;
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: #00ff00;
+    text-shadow: 0 0 5px #00ff00;
+}
+
+.header-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.model-selector {
+    background-color: #003300;
+    border: 1px solid #00aa00;
+    color: #00ff00;
+    padding: 6px 10px;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    min-width: 140px;
+}
+
+.model-selector:hover {
+    background-color: #004400;
+    border-color: #00ff00;
+}
+
+.model-selector:focus {
+    outline: none;
+    border-color: #00ff00;
+    box-shadow: 0 0 5px rgba(0, 255, 0, 0.3);
+}
+
+.model-selector option {
+    background-color: #001a00;
+    color: #00ff00;
+    padding: 5px;
+}
+
+.file-upload-btn {
+    background-color: #003300;
+    border: 1px solid #00aa00;
+    color: #00ff00;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: all 0.3s;
+}
+
+.file-upload-btn:hover {
+    background-color: #004400;
+    transform: scale(1.05);
+}
+
+.clear-chat {
+    background-color: #003300;
+    border: 1px solid #00aa00;
+    color: #00ff00;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: all 0.3s;
+}
+
+.clear-chat:hover {
+    background-color: #004400;
+    transform: scale(1.05);
 }
 
 .terminal-body {
     flex: 1;
-    padding: 15px;
     overflow-y: auto;
+    padding: 20px;
+    background-color: #001a00;
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    background: rgba(10, 14, 20, 0.95);
+    gap: 15px;
 }
 
+/* Estilos para los mensajes */
 .message {
-    line-height: 1.4;
-    animation: fadeIn 0.3s ease;
+    padding: 15px;
+    border-radius: 8px;
+    animation: fadeIn 0.3s;
+    max-width: 90%;
+    word-wrap: break-word;
+}
+
+.message-content {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.message-text {
+    flex: 1;
+}
+
+.copy-message-btn {
+    background: rgba(0, 170, 0, 0.2);
+    border: 1px solid #00aa00;
+    color: #00ff00;
+    padding: 6px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: all 0.3s;
+    opacity: 0.7;
+    flex-shrink: 0;
+}
+
+.copy-message-btn:hover {
+    background: rgba(0, 170, 0, 0.4);
+    opacity: 1;
+    transform: scale(1.05);
+}
+
+.copy-message-btn:active {
+    transform: scale(0.95);
+}
+
+/* Estilos para archivos cargados */
+.file-info {
+    background: rgba(0, 170, 0, 0.1);
+    border: 1px solid #00aa00;
+    border-radius: 4px;
+    padding: 8px 12px;
+    margin: 5px 0;
+    font-size: 0.9rem;
+    color: #00cc66;
+}
+
+.file-preview {
+    background: rgba(0, 50, 0, 0.3);
+    border: 1px solid #006600;
+    border-radius: 4px;
+    padding: 10px;
+    margin: 5px 0;
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+    white-space: pre-wrap;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+/* Estilos para el modal de archivos */
+.file-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: #0a0e14;
+    border: 2px solid #00ff00;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 600px;
+    max-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+}
+
+.modal-header {
+    background: #001a00;
+    padding: 15px 20px;
+    border-bottom: 1px solid #00ff00;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.modal-header h3 {
+    color: #00ff00;
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+.close-modal {
+    background: transparent;
+    border: none;
+    color: #00ff00;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 3px;
+    transition: background 0.3s;
+}
+
+.close-modal:hover {
+    background: rgba(0, 255, 0, 0.2);
+}
+
+.modal-body {
+    padding: 20px;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.files-list {
+    margin-bottom: 20px;
+}
+
+.file-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px;
+    background: rgba(0, 50, 0, 0.2);
+    border: 1px solid #006600;
+    border-radius: 4px;
+    margin-bottom: 8px;
+}
+
+.file-icon {
+    color: #00ff00;
+    font-size: 1.2rem;
+    width: 24px;
+    text-align: center;
+}
+
+.file-details {
+    flex: 1;
+}
+
+.file-name {
+    color: #00ff00;
+    font-weight: bold;
+    margin-bottom: 2px;
+}
+
+.file-size {
+    color: #00cc66;
+    font-size: 0.8rem;
+}
+
+.comment-section {
+    margin-top: 15px;
+}
+
+.comment-section label {
+    display: block;
+    color: #00ff00;
+    margin-bottom: 8px;
+    font-weight: bold;
+}
+
+.comment-section textarea {
+    width: 100%;
+    min-height: 100px;
+    background: rgba(0, 20, 0, 0.5);
+    border: 1px solid #00aa00;
+    color: #00ff00;
+    padding: 12px;
+    border-radius: 4px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    resize: vertical;
+    outline: none;
+}
+
+.comment-section textarea:focus {
+    border-color: #00ff00;
+    box-shadow: 0 0 5px rgba(0, 255, 0, 0.3);
+}
+
+.comment-section textarea::placeholder {
+    color: #008800;
+}
+
+.modal-footer {
+    padding: 15px 20px;
+    border-top: 1px solid #00ff00;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.cancel-btn, .send-btn {
+    padding: 8px 16px;
+    border: 1px solid #00aa00;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+.cancel-btn {
+    background: #003300;
+    color: #00ff00;
+}
+
+.cancel-btn:hover {
+    background: #004400;
+}
+
+.send-btn {
+    background: #00aa00;
+    color: #000;
+}
+
+.send-btn:hover {
+    background: #00ff00;
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(5px); }
+    from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
 .user-message {
-    color: #00ff00;
+    background: linear-gradient(135deg, #002200, #003300);
+    border-left: 4px solid #00ff00;
     align-self: flex-end;
-    background: rgba(0, 80, 0, 0.15);
-    padding: 8px 12px;
-    border-radius: 8px;
-    max-width: 80%;
-    word-wrap: break-word;
+    text-align: right;
 }
 
 .ai-message {
-    color: #00cc66;
+    background: linear-gradient(135deg, #001500, #002200);
+    border-left: 4px solid #00aa00;
     align-self: flex-start;
-    background: rgba(0, 60, 0, 0.15);
-    padding: 8px 12px;
-    border-radius: 8px;
-    max-width: 80%;
-    word-wrap: break-word;
 }
 
+.message-text {
+    line-height: 1.6;
+    font-size: 0.95rem;
+}
+
+/* Indicador de escritura */
+.typing-indicator {
+    padding: 12px 20px;
+    color: #00aa00;
+    font-style: italic;
+    display: none;
+    background-color: #002200;
+    border-radius: 8px;
+    margin: 0 20px;
+    align-self: flex-start;
+}
+
+/* Contenedor de entrada de texto */
 .input-container {
-    padding: 15px;
-    border-top: 1px solid #00ff00;
-    background: #0a0e14;
     display: flex;
-    align-items: center;
+    padding: 20px;
+    background-color: #002200;
+    border-top: 2px solid #00aa00;
     flex-shrink: 0;
 }
 
 .terminal-input {
     flex: 1;
-    background: rgba(0, 30, 0, 0.3);
-    border: 1px solid #00aa00;
+    background-color: #001100;
+    border: 2px solid #00aa00;
     color: #00ff00;
-    font-size: 1rem;
-    outline: none;
-    padding: 10px 15px;
-    border-radius: 20px;
+    padding: 12px 18px;
+    border-radius: 25px 0 0 25px;
     font-family: 'Courier New', monospace;
+    font-size: 1rem;
+}
+
+.terminal-input:focus {
+    outline: none;
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.5);
+    border-color: #00ff00;
+}
+
+.terminal-input::placeholder {
+    color: #00aa00;
 }
 
 .send-button {
-    background: #00aa00;
-    color: #000;
-    border: none;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    margin-left: 10px;
+    background: linear-gradient(135deg, #00aa00, #00ff00);
+    border: 2px solid #00aa00;
+    color: #001100;
+    padding: 12px 20px;
     cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    border-radius: 0 25px 25px 0;
+    transition: all 0.3s;
+    font-weight: bold;
 }
 
+.send-button:hover {
+    background: linear-gradient(135deg, #00ff00, #00aa00);
+    transform: scale(1.02);
+}
+
+/* Pie de terminal */
 .terminal-footer {
-    padding: 8px 15px;
-    border-top: 1px solid #00ff00;
-    background: #0a0e14;
+    background-color: #002200;
+    padding: 12px 20px;
     display: flex;
     justify-content: space-between;
-    font-size: 0.75rem;
-    color: #008800;
+    font-size: 0.9rem;
+    color: #00aa00;
+    border-top: 2px solid #00aa00;
     flex-shrink: 0;
-}
-
-.typing-indicator {
-    color: #008800;
-    font-style: italic;
-    display: none;
-    padding: 5px 15px;
-}
-
-.header-text {
-    text-align: center;
-    flex: 1;
-    font-size: 1.1rem;
 }
 
 /* Estilos para bloques de código */
 .code-block {
-    position: relative;
-    background: #1a1a1a;
-    border: 1px solid #00aa00;
-    border-radius: 5px;
-    padding: 12px;
-    margin: 8px 0;
-    overflow-x: auto;
+    background-color: #000c00;
+    border: 2px solid #007700;
+    border-radius: 8px;
+    margin: 15px 0;
+    overflow: hidden;
 }
 
 .code-header {
+    background: linear-gradient(135deg, #002200, #003300);
+    padding: 12px 15px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 8px;
-    padding-bottom: 5px;
-    border-bottom: 1px solid #00aa00;
+    border-bottom: 2px solid #007700;
 }
 
 .code-language {
-    color: #00ff00;
     font-weight: bold;
-    font-size: 0.9rem;
+    color: #00ff00;
+    font-size: 1rem;
 }
 
 .code-actions {
     display: flex;
-    gap: 8px;
+    gap: 12px;
 }
 
 .code-btn {
-    background: #003300;
-    color: #00ff00;
-    border: 1px solid #00aa00;
-    padding: 4px 8px;
-    border-radius: 3px;
+    background-color: #003300;
+    border: 2px solid #00aa00;
+    color: #00aa00;
+    padding: 8px 12px;
     cursor: pointer;
-    font-size: 0.75rem;
+    border-radius: 5px;
+    font-size: 0.9rem;
     transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    gap: 5px;
 }
 
 .code-btn:hover {
-    background: #00aa00;
-    color: #000;
+    background-color: #004400;
+    color: #00ff00;
+    transform: translateY(-2px);
 }
 
 .code-content {
-    color: #ffffff;
-    white-space: pre-wrap;
-    font-family: 'Courier New', monospace;
-    line-height: 1.4;
-    font-size: 0.9rem;
-}
-
-/* Efectos de terminal tipo hacker */
-.scan-line {
-    position: absolute;
-    height: 2px;
-    width: 100%;
-    background: linear-gradient(to bottom, transparent, rgba(0, 255, 0, 0.2), transparent);
-    animation: scan 8s linear infinite;
-    pointer-events: none;
-    z-index: 2;
-}
-
-@keyframes scan {
-    0% { top: 0%; }
-    100% { top: 100%; }
-}
-
-.glow-effect {
-    text-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00, 0 0 15px #00ff00;
-}
-
-.api-key-container {
-    color: #00aa00;
-    background: rgba(0, 30, 0, 0.3);
-    padding: 15px;
-    border-radius: 8px;
-    border: 1px solid #00aa00;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    flex-shrink: 0;
-}
-
-.api-key-label {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-weight: bold;
-}
-
-.api-key-input-container {
-    position: relative;
-    display: flex;
-    align-items: center;
-}
-
-.api-key-input {
-    background: rgba(0, 20, 0, 0.5);
-    border: 1px solid #00aa00;
+    padding: 20px;
+    overflow-x: auto;
     color: #00ff00;
-    padding: 10px 45px 10px 12px;
-    border-radius: 4px;
     font-family: 'Courier New', monospace;
-    font-size: 0.9rem;
-    width: 100%;
+    white-space: pre-wrap;
+    line-height: 1.6;
+    font-size: 0.95rem;
+    max-height: 800px;
+    overflow-y: auto;
 }
 
-.toggle-visibility {
-    position: absolute;
-    right: 5px;
-    background: transparent;
-    border: none;
-    color: #00aa00;
-    cursor: pointer;
-    padding: 5px;
-    border-radius: 3px;
+/* Barra de desplazamiento personalizada */
+.terminal-body::-webkit-scrollbar,
+.code-content::-webkit-scrollbar {
+    width: 10px;
 }
 
-.toggle-visibility:hover {
-    background: rgba(0, 170, 0, 0.2);
+.terminal-body::-webkit-scrollbar-track,
+.code-content::-webkit-scrollbar-track {
+    background: #001100;
+    border-radius: 5px;
 }
 
-.api-key-button {
-    background: #00aa00;
-    color: #000;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-family: 'Courier New', monospace;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    transition: background 0.3s;
+.terminal-body::-webkit-scrollbar-thumb,
+.code-content::-webkit-scrollbar-thumb {
+    background: #003300;
+    border-radius: 5px;
+    border: 2px solid #001100;
 }
 
-.api-key-button:hover {
-    background: #00ff00;
-}
-
-.api-key-info {
-    font-size: 0.8rem;
-    opacity: 0.8;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-.api-key-button.disconnect {
-    background: #aa5500;
-}
-
-.api-key-button.disconnect:hover {
-    background: #ff7700;
+.terminal-body::-webkit-scrollbar-thumb:hover,
+.code-content::-webkit-scrollbar-thumb:hover {
+    background: #004400;
 }
 
 /* Responsive */
-@media (max-width: 600px) {
-    .container {
-        height: 100vh;
+@media (max-width: 768px) {
+    body {
         padding: 10px;
     }
     
+    .container {
+        height: 95vh;
+    }
+    
+    .terminal {
+        border-radius: 8px;
+        max-height: 95vh;
+    }
+    
     .terminal-header {
-        padding: 10px 15px;
+        padding: 12px 15px;
     }
     
     .header-text {
+        font-size: 1rem;
+    }
+    
+    .model-selector {
+        min-width: 120px;
+        font-size: 0.7rem;
+        padding: 4px 8px;
+    }
+    
+    .modal-content {
+        width: 95%;
+        max-height: 90vh;
+    }
+    
+    .modal-header, .modal-body, .modal-footer {
+        padding: 12px 15px;
+    }
+    
+    .comment-section textarea {
+        min-height: 80px;
+    }
+    
+    .terminal-body {
+        padding: 15px;
+        gap: 12px;
+    }
+    
+    .message {
+        padding: 12px;
+        max-width: 95%;
+    }
+    
+    .input-container {
+        padding: 15px;
+    }
+    
+    .terminal-input {
+        padding: 10px 15px;
         font-size: 0.9rem;
     }
     
-    .user-message, .ai-message {
-        max-width: 90%;
+    .send-button {
+        padding: 10px 16px;
+    }
+    
+    .terminal-footer {
+        padding: 10px 15px;
+        flex-direction: column;
+        gap: 5px;
+        text-align: center;
+    }
+    
+    .code-header {
+        padding: 10px 12px;
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-start;
     }
     
     .code-actions {
-        flex-direction: column;
-        gap: 5px;
+        width: 100%;
+        justify-content: center;
     }
     
-    .api-key-container {
-        padding: 12px;
+    .code-content {
+        padding: 15px;
+        font-size: 0.9rem;
     }
 }
 
-/* Añadir estas reglas al archivo CSS existente */
-
-.api-key-input-container {
-    position: relative;
-    display: flex;
-    align-items: center;
+@media (max-width: 480px) {
+    .terminal-header {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+    
+    .header-actions {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .message {
+        font-size: 0.9rem;
+    }
+    
+    .code-btn {
+        padding: 6px 10px;
+        font-size: 0.8rem;
+    }
 }
 
-.api-key-input {
-    background: rgba(0, 20, 0, 0.5);
-    border: 1px solid #00aa00;
-    color: #00ff00;
-    padding: 10px 45px 10px 12px;
-    border-radius: 4px;
-    font-family: 'Courier New', monospace;
-    font-size: 0.9rem;
-    width: 100%;
-    letter-spacing: 2px; /* Espaciado para los asteriscos */
-    user-select: none; /* Prevenir selección de texto */
-    cursor: not-allowed; /* Indicar que no es editable */
+/* Animaciones adicionales */
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.7; }
+    100% { opacity: 1; }
 }
 
-.toggle-visibility:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
+.typing-indicator {
+    animation: pulse 1.5s infinite;
 }
 
-.api-key-info {
-    font-size: 0.8rem;
-    opacity: 0.8;
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    color: #00cc66; /* Color más suave para el mensaje informativo */
+.control {
+    transition: transform 0.3s;
+}
+
+.control:hover {
+    transform: scale(1.2);
+}
+
+/* Mejoras de accesibilidad */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Modo de alto contraste */
+@media (prefers-contrast: high) {
+    .user-message {
+        background: #002200;
+        border: 2px solid #00ff00;
+    }
+    
+    .ai-message {
+        background: #001100;
+        border: 2px solid #00aa00;
+    }
+    
+    .terminal {
+        border: 3px solid #00ff00;
+    }
 }
