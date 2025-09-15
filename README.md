@@ -1,142 +1,114 @@
-# 🤖 Terminal Chat - Gemini AI
+# 🤖 Gemini Terminal v1.0
 
-Una aplicación web moderna de chat con inteligencia artificial que utiliza la API de Google Gemini. Diseñada con una interfaz de terminal estilo hacker para una experiencia única y profesional.
+Una página web moderna de chat con inteligencia artificial que utiliza la API de Google Gemini. Diseñada con una interfaz de terminal estilo hacker para una experiencia única y profesional.
 
-![Terminal Chat](https://img.shields.io/badge/Status-Active-brightgreen)
-![License](https://img.shields.io/badge/License-MIT-blue)
-![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-yellow)
-![AI](https://img.shields.io/badge/AI-Google%20Gemini-orange)
+## ✨ Características Principales
 
-## ✨ Características
+- **🎯 Chat en tiempo real** con múltiples modelos de Gemini AI
+- **🎨 Interfaz de terminal** con efectos visuales estilo hacker
+- **📺 Línea de escaneo CRT** que simula pantallas antiguas
+- **📁 Carga de archivos** con análisis automático por IA
+- **⚡ Sistema de rate limiting** con reintentos automáticos
+- **📋 Botón de copiar** solo en respuestas de IA
+- **📱 Diseño responsive** para todos los dispositivos
+- **📝 Código completamente documentado**
+- **🔧 Configuración de API Key externa**
 
-### 🎯 **Funcionalidades Principales**
-- **Chat en tiempo real** con múltiples modelos de Gemini AI
-- **Interfaz de terminal** con efectos visuales estilo hacker
-- **Carga de archivos** con análisis automático por IA
-- **Múltiples modelos** de IA (Gemini 2.0 Flash, 1.5 Pro, etc.)
-- **Respuestas infinitas** sin límites de caracteres
-- **Copia de respuestas** con un solo clic
-- **Diseño responsive** para todos los dispositivos
+## 🚀 Uso
 
-### 🔧 **Modelos de IA Disponibles**
-- **Gemini 2.0 Flash** - Más rápido, ideal para conversaciones
-- **Gemini 1.5 Flash** - Rápido y eficiente, buena calidad
-- **Gemini 1.5 Pro** - Alta calidad, mejor para tareas complejas
-- **Gemini 1.0 Pro** - Modelo estable, confiable
+### Ejecutar la Página Web
 
-### 📁 **Tipos de Archivos Soportados**
-- **Texto**: `.txt`, `.md`, `.py`, `.js`, `.html`, `.css`, `.json`, `.xml`, `.csv`
-- **Imágenes**: `.jpg`, `.jpeg`, `.png`, `.gif`, `.webp`
-- **Documentos**: `.pdf`, `.doc`, `.docx`
-- **Audio**: `.mp3`, `.wav`
-- **Video**: `.mp4`
-
-## 🚀 **Instalación y Uso**
-
-### **Requisitos**
-- Navegador web moderno (Chrome, Firefox, Safari, Edge)
-- Conexión a internet
-- API Key de Google Gemini (opcional - viene preconfigurada)
-
-### **Instalación**
-1. **Clona el repositorio:**
-   ```bash
-   git clone https://github.com/tu-usuario/terminal-chat-gemini.git
-   cd terminal-chat-gemini
-   ```
-
-2. **Abre el archivo:**
-   ```bash
-   open index.html
-   ```
-   O simplemente arrastra `index.html` a tu navegador.
-
-3. **¡Listo!** La aplicación se conectará automáticamente.
-
-### **Uso Básico**
-1. **Selecciona un modelo** de IA en el selector superior
-2. **Escribe tu mensaje** en el campo de entrada
-3. **Presiona Enter** o haz clic en el botón de envío
-4. **Disfruta** de las respuestas de Gemini AI
-
-### **Carga de Archivos**
-1. **Haz clic** en el botón de clip (📎) en la cabecera
-2. **Selecciona archivos** de tu computadora
-3. **Escribe instrucciones** en el modal que aparece
-4. **Envía** para que Gemini analice los archivos
-
-## 🎨 **Capturas de Pantalla**
-
-### **Interfaz Principal**
-```
-┌─────────────────────────────────────────────────────────┐
-│  ● ● ●  gemini-terminal-chat  [Modelo] [📎] [🗑️]      │
-├─────────────────────────────────────────────────────────┤
-│  🤖 Sistema conectado correctamente. ¡Ya puedes chatear!│
-│  👤 Hola, ¿puedes ayudarme con mi código?              │
-│  🤖 ¡Por supuesto! Estoy aquí para ayudarte...         │
-├─────────────────────────────────────────────────────────┤
-│  [Escribe tu mensaje aquí...]                    [📤]   │
-├─────────────────────────────────────────────────────────┤
-│  Status: Conectado | Modelo: Gemini 2.0 Flash | © 2025 │
-└─────────────────────────────────────────────────────────┘
+```bash
+# Desde el directorio del proyecto
+python3 -m http.server 8000
 ```
 
-## 🛠️ **Tecnologías Utilizadas**
+Luego abre tu navegador en: `http://localhost:8000`
 
-- **Frontend**: HTML5, CSS3, JavaScript ES6+
-- **IA**: Google Gemini API
-- **Iconos**: Font Awesome 6.4.0
-- **Estilos**: CSS personalizado con efectos de terminal
-- **Seguridad**: Ofuscación de API key
+## 📸 Capturas de Pantalla
 
-## 📁 **Estructura del Proyecto**
+![Gemini Terminal - Interfaz Principal](appweb.png)
+
+*Interfaz principal de Gemini Terminal mostrando el tema hacker con colores verdes, línea de escaneo CRT y diseño de terminal.*
+
+## ⚙️ Configuración
+
+1. **Obtener API Key de Google Gemini:**
+   - Ve a [Google AI Studio](https://makersuite.google.com/app/apikey)
+   - Crea una nueva API Key
+
+2. **Configurar la aplicación:**
+   - Edita el archivo `script.js`
+   - Busca la línea con `apiKey: 'TU_API_KEY_AQUI'`
+   - Reemplaza `'TU_API_KEY_AQUI'` con tu clave API real
+
+## 🎮 Uso de la Página Web
+
+### Funcionalidades
+
+- **💬 Chat**: Escribe mensajes y recibe respuestas de Gemini AI
+- **📁 Cargar archivos**: Arrastra archivos para análisis automático
+- **🔄 Cambiar modelo**: Selecciona entre diferentes modelos de Gemini
+- **📋 Copiar respuestas**: Botón de copiar en respuestas de IA
+- **🧹 Limpiar chat**: Botón para limpiar la conversación
+
+## 🗑️ Eliminación
+
+Para eliminar la página web, simplemente borra la carpeta del proyecto.
+
+## 📁 Estructura del Proyecto
 
 ```
-terminal-chat-gemini/
-├── index.html          # Página principal
-├── script.js           # Lógica de la aplicación
-├── style.css           # Estilos y efectos visuales
-├── LICENSE             # Licencia MIT
+gemini-terminal/
+├── index.html          # Interfaz principal
+├── script.js           # Lógica JavaScript
+├── style.css           # Estilos con tema hacker
+├── icon.png            # Icono de la aplicación
+├── appweb.png          # Captura de pantalla de la interfaz
+├── LICENSE             # Licencia MIT y créditos completos
 └── README.md           # Este archivo
 ```
 
-## 🔒 **Seguridad**
+## 🎨 Tema Hacker
 
-- **API Key ofuscada** para mayor seguridad
-- **Validación de archivos** antes de procesar
-- **Límites de tamaño** (20MB por archivo)
-- **Tipos de archivo permitidos** únicamente
+La aplicación incluye:
+- **Colores verdes** estilo terminal
+- **Fuente monospace** para autenticidad
+- **Línea de escaneo CRT** animada
+- **Efectos visuales** retro
+- **Interfaz minimalista** y funcional
 
-## 🤝 **Contribuciones**
+## 🔧 Requisitos del Sistema
 
-¡Las contribuciones son bienvenidas! Si tienes ideas para mejorar la aplicación:
+- **Python**: 3.x (para servidor local)
+- **Navegador**: Cualquier navegador moderno
+- **Memoria**: Mínimo 256MB RAM
+- **Espacio**: ~1MB de espacio en disco
 
-1. **Fork** el proyecto
-2. **Crea** una rama para tu feature (`git checkout -b feature/AmazingFeature`)
-3. **Commit** tus cambios (`git commit -m 'Add some AmazingFeature'`)
-4. **Push** a la rama (`git push origin feature/AmazingFeature`)
-5. **Abre** un Pull Request
+## 📞 Soporte
 
-## 📝 **Licencia**
+- **Autor**: Luis Alberto Gómez
+- **Email**: luisalbertogomez111@gmail.com
+- **Versión**: 2.0
 
-Este proyecto está bajo la Licencia MIT. Ver el archivo [LICENSE](LICENSE) para más detalles.
+## 📄 Licencia
 
-**Copyright (c) 2025 Luis Alberto Gómez**
-**Email: luisalbertogomez111@gmail.com**
+Este proyecto está bajo la **Licencia MIT**. 
 
-## 🙏 **Agradecimientos**
+**Autor**: Luis Alberto Gómez  
+**Email**: luisalbertogomez111@gmail.com  
+**Año**: 2025
 
-- **Google** por la API de Gemini
-- **Font Awesome** por los iconos
-- **Comunidad open source** por la inspiración
+Ver archivo `LICENSE` para más detalles y créditos completos del proyecto.
 
-## 📞 **Contacto**
+## 🎯 Próximas Características
 
-**Luis Alberto Gómez**
-- 📧 Email: luisalbertogomez111@gmail.com
-- 🐙 GitHub: [@luisalgomez111](https://github.com/tu-usuario)
+- [ ] Soporte para más modelos de IA
+- [ ] Temas personalizables
+- [ ] Exportación de conversaciones
+- [ ] Modo offline
+- [ ] Integración con más APIs
 
 ---
 
-⭐ **¡Si te gusta este proyecto, no olvides darle una estrella!** ⭐
+**¡Disfruta usando Gemini Terminal como página web!** 🚀

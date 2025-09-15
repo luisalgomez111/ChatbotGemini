@@ -1,54 +1,104 @@
-/* style.css */
-/* Estilos generales */
+/* ===================================================================
+   GEMINI TERMINAL
+   Estilos CSS para aplicación de chat con interfaz de terminal
+   Autor: Luis Alberto Gómez
+   Versión: 1.0
+   =================================================================== */
+
+/* ==================== LÍNEA DE ESCANEO ==================== */
+/* Efecto visual que simula el escaneo de pantallas CRT antiguas */
+.scan-line {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 1.5px;
+    background: linear-gradient(90deg, 
+        transparent 0%, 
+        rgba(0, 255, 0, 0.2) 20%, 
+        rgba(0, 255, 0, 0.4) 50%, 
+        rgba(0, 255, 0, 0.2) 80%, 
+        transparent 100%
+    );
+    box-shadow: 0 0 7px rgba(0, 255, 0, 0.3);
+    animation: scanMove 3.5s linear infinite;
+    z-index: 1000;
+    pointer-events: none;
+}
+
+@keyframes scanMove {
+    0% {
+        transform: translateY(-1.5px);
+        opacity: 0;
+    }
+    12% {
+        opacity: 0.6;
+    }
+    88% {
+        opacity: 0.6;
+    }
+    100% {
+        transform: translateY(100vh);
+        opacity: 0;
+    }
+}
+
+/* ==================== ESTILOS GENERALES ==================== */
+/* Reset y configuración base para toda la aplicación */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Courier New', monospace;
+    font-family: 'Courier New', monospace; /* Fuente monospace para efecto terminal */
 }
 
+/* Configuración del cuerpo de la página */
 body {
-    background-color: #0a0a0a;
-    color: #00ff00;
-    min-height: 100vh;
+    background-color: #0a0a0a; /* Fondo negro oscuro */
+    color: #00ff00; /* Texto verde neón */
+    min-height: 100vh; /* Altura mínima de viewport */
     padding: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-/* Contenedor principal */
+/* ==================== CONTENEDOR PRINCIPAL ==================== */
+/* Contenedor principal que centra la terminal en la pantalla */
 .container {
     width: 100%;
-    max-width: 1200px;
-    height: 100vh;
+    max-width: 1200px; /* Ancho máximo para pantallas grandes */
+    height: 100vh; /* Altura completa del viewport */
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-/* Terminal de chat */
+/* ==================== TERMINAL PRINCIPAL ==================== */
+/* Terminal principal con estilo hacker/retro */
 .terminal {
-    background-color: #001100;
-    border: 2px solid #00aa00;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+    background-color: #001100; /* Fondo verde muy oscuro */
+    border: 2px solid #00aa00; /* Borde verde */
+    border-radius: 10px; /* Esquinas redondeadas */
+    overflow: hidden; /* Oculta contenido que se desborde */
+    box-shadow: 0 0 20px rgba(0, 255, 0, 0.3); /* Sombra verde neón */
     display: flex;
-    flex-direction: column;
+    flex-direction: column; /* Disposición vertical */
     width: 100%;
     height: 100%;
-    max-height: 90vh;
+    max-height: 90vh; /* Altura máxima del viewport */
 }
 
+/* ==================== CABECERA DE LA TERMINAL ==================== */
+/* Barra superior de la terminal con controles y título */
 .terminal-header {
-    background-color: #002200;
-    padding: 15px 20px;
+    background-color: #002200; /* Fondo verde oscuro */
+    padding: 15px 20px; /* Espaciado interno */
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 2px solid #00aa00;
-    flex-shrink: 0;
+    justify-content: space-between; /* Distribuye elementos horizontalmente */
+    align-items: center; /* Centra verticalmente */
+    border-bottom: 2px solid #00aa00; /* Línea separadora verde */
+    flex-shrink: 0; /* No se reduce de tamaño */
 }
 
 .terminal-controls {
@@ -119,6 +169,7 @@ body {
     padding: 5px;
 }
 
+
 .file-upload-btn {
     background-color: #003300;
     border: 1px solid #00aa00;
@@ -133,6 +184,18 @@ body {
     background-color: #004400;
     transform: scale(1.05);
 }
+
+.clear-chat {
+    background-color: #003300;
+    border: 1px solid #00aa00;
+    color: #00ff00;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: all 0.3s;
+}
+
+
 
 .clear-chat {
     background-color: #003300;
@@ -488,6 +551,7 @@ body {
     flex-shrink: 0;
 }
 
+
 /* Estilos para bloques de código */
 .code-block {
     background-color: #000c00;
@@ -729,3 +793,222 @@ body {
         border: 3px solid #00ff00;
     }
 }
+
+/* ==================== TEMA HACKER MEJORADO ==================== */
+body.hacker-theme {
+    background: radial-gradient(circle at center, #001100, #000000);
+    color: #00ff00;
+    font-family: 'Courier New', monospace;
+}
+
+body.hacker-theme .terminal {
+    background: #000000;
+    border: 2px solid #00ff00;
+    box-shadow: 
+        0 0 10px rgba(0, 255, 0, 0.2),
+        inset 0 0 10px rgba(0, 255, 0, 0.05);
+    border-radius: 0;
+}
+
+body.hacker-theme .terminal-header {
+    background: #001a00;
+    border-bottom: 2px solid #00ff00;
+    position: relative;
+    overflow: hidden;
+}
+
+body.hacker-theme .terminal-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(0, 255, 0, 0.2), transparent);
+    animation: scan 3s infinite;
+}
+
+@keyframes scan {
+    0% { left: -100%; }
+    100% { left: 100%; }
+}
+
+body.hacker-theme .header-text {
+    color: #00ff00;
+    text-shadow: 
+        0 0 5px #00ff00,
+        0 0 10px #00ff00,
+        0 0 15px #00ff00;
+    font-weight: bold;
+    letter-spacing: 2px;
+}
+
+body.hacker-theme .model-selector {
+    background: #001a00;
+    border: 2px solid #00aa00;
+    color: #00ff00;
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.2);
+}
+
+body.hacker-theme .model-selector:hover {
+    background: #003300;
+    border-color: #00ff00;
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.4);
+}
+
+body.hacker-theme .model-selector option {
+    background: #001a00;
+    color: #00ff00;
+}
+
+body.hacker-theme .file-upload-btn,
+body.hacker-theme .history-btn,
+body.hacker-theme .theme-selector,
+body.hacker-theme .clear-chat {
+    background: #001a00;
+    border: 2px solid #00aa00;
+    color: #00ff00;
+    box-shadow: 0 0 8px rgba(0, 255, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+body.hacker-theme .file-upload-btn:hover,
+body.hacker-theme .history-btn:hover,
+body.hacker-theme .theme-selector:hover,
+body.hacker-theme .clear-chat:hover {
+    background: #003300;
+    border-color: #00ff00;
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.5);
+    transform: translateY(-2px);
+}
+
+body.hacker-theme .terminal-body {
+    background: #000000;
+    position: relative;
+}
+
+body.hacker-theme .terminal-body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        repeating-linear-gradient(
+            0deg,
+            transparent,
+            transparent 2px,
+            rgba(0, 255, 0, 0.03) 2px,
+            rgba(0, 255, 0, 0.03) 4px
+        );
+    pointer-events: none;
+}
+
+body.hacker-theme .user-message {
+    background: #000000;
+    border: none;
+    color: #00ff00;
+    position: relative;
+}
+
+body.hacker-theme .user-message::before {
+    content: '> ';
+    color: #00ff00;
+    font-weight: bold;
+    position: absolute;
+    left: -20px;
+    top: 10px;
+}
+
+body.hacker-theme .ai-message {
+    background: #001100;
+    border: none;
+    color: #00cc66;
+    position: relative;
+}
+
+body.hacker-theme .ai-message::before {
+    content: '$ ';
+    color: #00cc66;
+    font-weight: bold;
+    position: absolute;
+    left: -20px;
+    top: 10px;
+}
+
+body.hacker-theme .terminal-input {
+    background: #000000;
+    border: 2px solid #00aa00;
+    color: #00ff00;
+    box-shadow: 
+        0 0 8px rgba(0, 255, 0, 0.2);
+}
+
+body.hacker-theme .terminal-input:focus {
+    border-color: #00ff00;
+    box-shadow: 
+        0 0 12px rgba(0, 255, 0, 0.3);
+}
+
+body.hacker-theme .terminal-input::placeholder {
+    color: #00aa00;
+}
+
+body.hacker-theme .send-button {
+    background: #00ff00;
+    border: 2px solid #00aa00;
+    color: #000000;
+    font-weight: bold;
+    box-shadow: 0 0 10px rgba(0, 255, 0, 0.3);
+}
+
+body.hacker-theme .send-button:hover {
+    background: #00aa00;
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.4);
+}
+
+body.hacker-theme .terminal-footer {
+    background: #001a00;
+    border-top: 2px solid #00ff00;
+    color: #00aa00;
+    text-shadow: 0 0 3px rgba(0, 255, 0, 0.3);
+}
+
+body.hacker-theme .code-block {
+    background: #000d00;
+    border: 1px solid #00aa00;
+    box-shadow: 0 0 8px rgba(0, 255, 0, 0.1);
+}
+
+body.hacker-theme .code-header {
+    background: #002200;
+    border-bottom: 1px solid #00aa00;
+}
+
+body.hacker-theme .code-language {
+    color: #00ff00;
+    text-shadow: 0 0 3px rgba(0, 255, 0, 0.3);
+}
+
+body.hacker-theme .code-btn {
+    background: #001a00;
+    border: 1px solid #00aa00;
+    color: #00ff00;
+}
+
+body.hacker-theme .code-btn:hover {
+    background: #003300;
+    border-color: #00ff00;
+    box-shadow: 0 0 5px rgba(0, 255, 0, 0.2);
+}
+
+body.hacker-theme .code-content {
+    color: #00cc66;
+    text-shadow: 0 0 2px rgba(0, 204, 102, 0.2);
+}
+
+
+
+
+

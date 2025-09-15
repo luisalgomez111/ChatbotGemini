@@ -1,7 +1,6 @@
 MIT License
 
 Copyright (c) 2025 Luis Alberto Gómez
-Email: luisalbertogomez111@gmail.com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -20,3 +19,76 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+---
+
+## Créditos del Proyecto
+
+**Gemini Terminal v1.0**
+
+### Autor Principal
+- **Luis Alberto Gómez** - Desarrollador Principal
+- **Email**: luisalbertogomez111@gmail.com
+- **Rol**: Diseño, desarrollo, implementación y documentación completa
+
+### Contribuciones del Autor
+
+#### 🎨 **Diseño y Interfaz**
+- Diseño completo de la interfaz de terminal estilo hacker
+- Implementación del tema visual con colores verdes (#00ff00)
+- Creación de la línea de escaneo CRT animada
+- Diseño responsive para todos los dispositivos
+- Efectos visuales retro y animaciones
+
+#### 💻 **Desarrollo Técnico**
+- Arquitectura completa de la aplicación web
+- Integración con Google Gemini AI API
+- Sistema de rate limiting con reintentos automáticos
+- Manejo de archivos múltiples con análisis automático
+- Sistema de configuración externa de API Key
+- Implementación de CORS para servidor local
+
+#### 🔧 **Funcionalidades Avanzadas**
+- Chat en tiempo real con múltiples modelos de Gemini
+- Detección y formateo automático de código en respuestas
+- Botón de copiar inteligente (solo en respuestas de IA)
+- Sistema de mensajes del sistema vs respuestas de IA
+- Manejo de errores y estados de conexión
+- Optimización de rendimiento y memoria
+
+#### 📚 **Documentación y Empaquetado**
+- Documentación completa del código (HTML, CSS, JavaScript)
+- README detallado con instrucciones de uso
+- Creación de paquetes .deb para Debian
+- Scripts de instalación y desinstalación
+- Estructura de proyecto profesional
+
+#### 🎯 **Características Únicas**
+- Interfaz de terminal auténtica con efectos CRT
+- Integración nativa con sistemas Linux
+- Configuración flexible y externa
+- Código completamente comentado para mantenimiento
+- Diseño minimalista pero funcional
+
+### Tecnologías Utilizadas
+- **Frontend**: HTML5, CSS3, JavaScript ES6+
+- **Backend**: Python 3 (servidor HTTP local)
+- **API**: Google Gemini AI
+- **Estilo**: Tema hacker con efectos retro
+- **Empaquetado**: Debian .deb packages
+- **Documentación**: Markdown
+
+### Reconocimientos Especiales
+- **Google Gemini AI** - Por proporcionar la API de inteligencia artificial
+- **Comunidad Open Source** - Por las librerías y herramientas utilizadas
+- **Debian Project** - Por el sistema de empaquetado .deb
+
+### Historial de Versiones
+- **v1.0** (2025) - Versión inicial completa con todas las funcionalidades
+
+---
+
+**Este proyecto representa un trabajo completo de desarrollo web moderno,**
+**combinando diseño creativo, funcionalidad avanzada y documentación profesional.**
+
+**¡Gracias por crear Gemini Terminal!** 🚀

@@ -1,97 +1,65 @@
-// script.js
+/* ===================================================================
+   GEMINI TERMINAL
+   Script principal de la aplicación de chat con interfaz de terminal
+   
+   FUNCIONALIDADES PRINCIPALES:
+   - Chat con API de Google Gemini usando clave preconfigurada
+   - Interfaz de terminal estilo hacker responsiva
+   - Respuestas largas de hasta 4000 tokens
+   - Detección y formateo de código en respuestas
+   - Sistema de rate limiting con reintentos automáticos
+   - Carga y procesamiento de archivos múltiples
+   - Efectos visuales retro (línea de escaneo CRT)
+   - Botón de copiar solo en respuestas de IA
+   
+   ARQUITECTURA:
+   - Variables globales para estado de la aplicación
+   - Funciones de inicialización y configuración
+   - Manejo de eventos de usuario
+   - Comunicación con API de Gemini
+   - Procesamiento de archivos
+   - Sistema de cola para rate limiting
+   - Funciones de utilidad y persistencia
+   
+   Autor: Luis Alberto Gómez
+   Versión: 1.0
+   Fecha: 2025
+   =================================================================== */
 
-/**
- * Terminal Chat - Gemini AI
- * Script principal de la aplicación
- * Versión: 2.0-flash
- * 
- * Funcionalidades:
- * - Conexión automática con API de Google Gemini usando clave preconfigurada
- * - Interfaz de terminal estilo hacker responsiva
- * - Respuestas largas de hasta 4000 tokens
- * - Detección y formateo de código en respuestas
- */
-
-// Esperar a que el DOM esté completamente cargado
+// ==================== INICIALIZACIÓN DE LA APLICACIÓN ====================
+// Esperar a que el DOM esté completamente cargado antes de inicializar
 document.addEventListener('DOMContentLoaded', function() {
-    // Elementos del DOM
-    const terminalBody = document.getElementById('terminal-body');
-    const userInput = document.getElementById('user-input');
-    const sendButton = document.getElementById('send-button');
-    const typingIndicator = document.getElementById('typing-indicator');
-    const statusElement = document.getElementById('status');
-    const clearChatButton = document.getElementById('clear-chat');
     
-    // API Key ofuscada para mayor seguridad
-    const OBFUSCATED_DATA = {
-        parts: [
-            'MbJvMRJDFhQrSqc1AhFDJRMvJbM'.split('').reverse().join(''),
-            'BJ{aTzC__pbzZoWSGjuMFmQrSqc1AhFDJRMvJbM'.split('').map(c => String.fromCharCode(c.charCodeAt(0) - 1)).join(''),
-            'CK|bUzD__qcz[pXTHkvNGnRrTrd2BiGEKSNwKcN'.split('').map(c => String.fromCharCode(c.charCodeAt(0) + 1)).join('')
-        ],
-        indices: [0, 1, 2],
-        offset: 1
-    };
+    // ==================== VARIABLES GLOBALES ====================
+    // Referencias a elementos del DOM para manipulación
+    const terminalBody = document.getElementById('terminal-body'); // Contenedor de mensajes
+    const userInput = document.getElementById('user-input'); // Campo de entrada de texto
+    const sendButton = document.getElementById('send-button'); // Botón de envío
+    const typingIndicator = document.getElementById('typing-indicator'); // Indicador de escritura
+    const statusElement = document.getElementById('status'); // Elemento de estado
+    const clearChatButton = document.getElementById('clear-chat'); // Botón limpiar chat
     
-    let apiKey = deobfuscateApiKey();
-    let isProcessing = false; // Flag para controlar el estado de procesamiento
-    let currentConversation = []; // Conversación actual
-    let selectedModel = 'gemini-2.0-flash'; // Modelo seleccionado por defecto
-    let uploadedFiles = []; // Archivos cargados
+    // ==================== CONFIGURACIÓN DE API ====================
+    // API Key directa para Google Gemini (configurada previamente)
+    let apiKey = 'AIzaSyC__pbzZoWSGjuMFmQrSqc1AhFDJRMvJbM'; // Clave API de Google Gemini
     
-    // Inicializar la aplicación
+    // ==================== VARIABLES DE ESTADO ====================
+    let isProcessing = false; // Flag para controlar el estado de procesamiento de mensajes
+    let currentConversation = []; // Array que almacena la conversación actual
+    let selectedModel = 'gemini-2.0-flash'; // Modelo de IA seleccionado por defecto
+    let uploadedFiles = []; // Array de archivos cargados por el usuario
+    let requestQueue = []; // Cola de solicitudes para manejar rate limiting
+    let isProcessingRequest = false; // Flag para controlar procesamiento de la cola
+    
+    // ==================== INICIALIZACIÓN ====================
+    // Llamar a la función de inicialización principal
     initializeApp();
     
-    /**
-     * Función auxiliar para transformaciones de caracteres
-     * @param {string} str - String a transformar
-     * @param {number} offset - Offset para la transformación
-     * @returns {string} - String transformado
-     */
-    function transformString(str, offset) {
-        return str.split('').map(c => String.fromCharCode(c.charCodeAt(0) + offset)).join('');
-    }
+    // ==================== FUNCIONES DE INICIALIZACIÓN ====================
     
     /**
-     * Función auxiliar para validar formato de API key
-     * @param {string} key - Clave a validar
-     * @returns {boolean} - True si es válida
-     */
-    function isValidApiKey(key) {
-        return key && key.startsWith('AIza') && key.length > 30;
-    }
-    
-    /**
-     * Función para desofuscar la API key
-     * @returns {string} - API key desofuscada
-     */
-    function deobfuscateApiKey() {
-        try {
-            // Método de desofuscación complejo
-            const data = OBFUSCATED_DATA;
-            const keyPart = data.parts[data.indices[0]];
-            
-            // Aplicar transformaciones inversas
-            let decoded = keyPart.split('').reverse().join('');
-            decoded = transformString(decoded, -data.offset);
-            
-            // Validar que la clave tenga el formato correcto
-            if (isValidApiKey(decoded)) {
-                return decoded;
-            }
-            
-            // Fallback: usar la segunda parte
-            const fallback = data.parts[data.indices[1]];
-            return transformString(fallback, 1);
-            
-        } catch (error) {
-            console.error('Error al desofuscar la API key:', error);
-            return null;
-        }
-    }
-    
-    /**
-     * Función para inicializar la aplicación
+     * Función principal de inicialización de la aplicación
+     * Configura todos los event listeners y establece la conexión inicial
      */
     function initializeApp() {
         // Configurar event listeners
@@ -134,16 +102,20 @@ document.addEventListener('DOMContentLoaded', function() {
             statusElement.textContent = "Conectado";
             userInput.disabled = false;
             userInput.focus();
-            addMessage("Sistema conectado correctamente. ¡Ya puedes chatear!", 'ai');
+            addSystemMessage("Sistema conectado correctamente. ¡Ya puedes chatear!");
+            addSystemMessage("💡 Sistema de rate limiting activado para evitar errores 429. Las solicitudes se procesan automáticamente con reintentos.");
         } else {
-            addMessage("Error: No hay API Key configurada.", 'ai');
+            addSystemMessage("Error: No hay API Key configurada.");
             statusElement.textContent = "Error";
         }
     }
     
     
+    // ==================== CONFIGURACIÓN DE EVENTOS ====================
+    
     /**
-     * Función para configurar todos los event listeners
+     * Configura todos los event listeners de la aplicación
+     * Incluye: envío de mensajes, cambio de modelo, carga de archivos, limpieza de chat
      */
     function setupEventListeners() {
         // Enviar mensaje al hacer clic en el botón
@@ -166,7 +138,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 selectedModel = e.target.value;
                 const modelInfo = getModelInfo(selectedModel);
                 const modelDisplayName = e.target.options[e.target.selectedIndex].text;
-                addMessage(`Modelo cambiado a: ${modelDisplayName}${modelInfo}`, 'ai');
+                addSystemMessage(`Modelo cambiado a: ${modelDisplayName}${modelInfo}`);
                 updateModelDisplay(modelDisplayName);
             });
         }
@@ -184,6 +156,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 handleFileUpload(e.target.files);
             });
         }
+        
+        // Aplicar tema hacker por defecto
+        document.body.classList.add('hacker-theme');
+        
+        
     }
     
     /**
@@ -231,10 +208,12 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
+    // ==================== MANEJO DE ARCHIVOS ====================
+    
     /**
-     * Función para validar un archivo
+     * Valida si un archivo es compatible con la aplicación
      * @param {File} file - Archivo a validar
-     * @returns {boolean} - True si el archivo es válido
+     * @returns {boolean} - True si el archivo es válido, false en caso contrario
      */
     function validateFile(file) {
         const maxSize = 20 * 1024 * 1024; // 20MB
@@ -246,12 +225,12 @@ document.addEventListener('DOMContentLoaded', function() {
         ];
         
         if (file.size > maxSize) {
-            addMessage(`Error: El archivo ${file.name} es demasiado grande (máximo 20MB)`, 'ai');
+            addSystemMessage(`Error: El archivo ${file.name} es demasiado grande (máximo 20MB)`);
             return false;
         }
         
         if (!allowedTypes.includes(file.type) && !file.name.match(/\.(py|js|html|css|json|xml|csv|md|txt)$/i)) {
-            addMessage(`Error: Tipo de archivo no soportado: ${file.name}`, 'ai');
+            addSystemMessage(`Error: Tipo de archivo no soportado: ${file.name}`);
             return false;
         }
         
@@ -438,7 +417,7 @@ document.addEventListener('DOMContentLoaded', function() {
         // Mostrar información de archivos
         uploadedFiles.forEach(file => {
             const fileSize = (file.size / 1024).toFixed(1);
-            addMessage(`📎 Archivo: ${file.name} (${fileSize} KB)`, 'ai');
+            addSystemMessage(`📎 Archivo: ${file.name} (${fileSize} KB)`);
         });
         
         // Mostrar indicador de escribiendo
@@ -457,12 +436,15 @@ document.addEventListener('DOMContentLoaded', function() {
             terminalBody.innerHTML = '';
             currentConversation = [];
             uploadedFiles = []; // Limpiar archivos cargados
-            addMessage("Chat limpiado. Puedes comenzar una nueva conversación.", 'ai');
+            addSystemMessage("Chat limpiado. Puedes comenzar una nueva conversación.");
         }
     }
     
+    // ==================== COMUNICACIÓN CON API ====================
+    
     /**
-     * Función para enviar mensaje a la API de Gemini
+     * Envía un mensaje del usuario a la API de Gemini
+     * Maneja la validación, estado de procesamiento y llamada a la API
      */
     function sendMessage() {
         const message = userInput.value.trim();
@@ -529,14 +511,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             };
             
-            // Realizar la petición a la API de Gemini con el modelo seleccionado
-            const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${selectedModel}:generateContent?key=${apiKey}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(requestBody)
-            });
+            // Realizar la petición a la API de Gemini con el modelo seleccionado usando rate limiting
+            const response = await queueRequest(
+                () => fetch(`https://generativelanguage.googleapis.com/v1beta/models/${selectedModel}:generateContent?key=${apiKey}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(requestBody)
+                }),
+                'chat-request'
+            );
             
             // Verificar si la respuesta es exitosa
             if (!response.ok) {
@@ -574,13 +559,13 @@ document.addEventListener('DOMContentLoaded', function() {
             
             // Manejar diferentes tipos de errores
             if (error.message.includes("API key not valid")) {
-                addMessage("Error: API Key no válida.", 'ai');
+                addSystemMessage("Error: API Key no válida.");
             } else if (error.message.includes("quota")) {
-                addMessage("Error: Se ha excedido la cuota de la API.", 'ai');
+                addSystemMessage("Error: Se ha excedido la cuota de la API.");
             } else if (error.message.includes("429")) {
-                addMessage("Error: Demasiadas solicitudes. Por favor, espera un momento.", 'ai');
+                addSystemMessage("Error: Demasiadas solicitudes. Por favor, espera un momento.");
             } else {
-                addMessage("Error: " + error.message, 'ai');
+                addSystemMessage("Error: " + error.message);
             }
             
             // Restaurar estado de la interfaz después del error
@@ -609,11 +594,11 @@ document.addEventListener('DOMContentLoaded', function() {
             if (containsCode(response)) {
                 addCodeMessage(response, 'ai');
             } else {
-                addMessage(response, 'ai');
+                addMessage(response, 'ai', true); // Mostrar botón de copiar para respuestas reales
             }
         } else {
             // Si la respuesta es larga, dividirla
-            addMessage("La respuesta es extensa. Procesando...", 'ai');
+            addSystemMessage("La respuesta es extensa. Procesando...");
             
             let remainingText = response;
             let partNumber = 1;
@@ -640,26 +625,29 @@ document.addEventListener('DOMContentLoaded', function() {
                     chunk = remainingText.substring(0, breakPoint + 1);
                 }
                 
-                addMessage(`[Parte ${partNumber}] ${chunk}`, 'ai');
+                addMessage(`[Parte ${partNumber}] ${chunk}`, 'ai', true); // Mostrar botón de copiar para partes de respuesta
                 remainingText = remainingText.substring(chunk.length);
                 partNumber++;
                 
                 // Pequeña pausa entre mensajes para mejor UX
                 if (remainingText.length > 0) {
-                    addMessage("--- Continuando ---", 'ai');
+                    addSystemMessage("--- Continuando ---");
                 }
             }
             
-            addMessage("Respuesta completa. ¿Necesitas más información?", 'ai');
+            addSystemMessage("Respuesta completa. ¿Necesitas más información?");
         }
     }
     
+    // ==================== MANEJO DE MENSAJES ====================
+    
     /**
-     * Función para agregar mensaje normal al chat
+     * Agrega un mensaje al chat con formato apropiado
      * @param {string} text - Texto del mensaje
      * @param {string} sender - Remitente ('user' o 'ai')
+     * @param {boolean} showCopyButton - Si mostrar botón de copiar (solo para respuestas reales de IA)
      */
-    function addMessage(text, sender) {
+    function addMessage(text, sender, showCopyButton = false) {
         const messageElement = document.createElement('div');
         messageElement.classList.add('message');
         messageElement.classList.add(sender === 'user' ? 'user-message' : 'ai-message');
@@ -675,8 +663,8 @@ document.addEventListener('DOMContentLoaded', function() {
         
         messageContent.appendChild(textContainer);
         
-        // Agregar botón de copiar solo para mensajes de la IA
-        if (sender === 'ai') {
+        // Agregar botón de copiar solo para respuestas reales de la IA
+        if (sender === 'ai' && showCopyButton) {
             const copyButton = document.createElement('button');
             copyButton.classList.add('copy-message-btn');
             copyButton.innerHTML = '<i class="fas fa-copy"></i>';
@@ -690,6 +678,14 @@ document.addEventListener('DOMContentLoaded', function() {
         messageElement.appendChild(messageContent);
         terminalBody.appendChild(messageElement);
         scrollToBottom();
+    }
+    
+    /**
+     * Función para agregar mensaje de sistema (sin botón de copiar)
+     * @param {string} text - Texto del mensaje
+     */
+    function addSystemMessage(text) {
+        addMessage(text, 'ai', false);
     }
     
     /**
@@ -889,4 +885,292 @@ document.addEventListener('DOMContentLoaded', function() {
             terminalBody.scrollTop = terminalBody.scrollHeight;
         }, 100);
     }
+    
+    // ==================== FUNCIONES DE RATE LIMITING ====================
+    
+    /**
+     * Función para hacer solicitudes con manejo de rate limiting
+     * @param {Function} requestFunction - Función que hace la solicitud
+     * @param {number} retries - Número de reintentos
+     * @returns {Promise} - Resultado de la solicitud
+     */
+    async function makeRequestWithRetry(requestFunction, retries = 3) {
+        for (let attempt = 1; attempt <= retries; attempt++) {
+            try {
+                return await requestFunction();
+            } catch (error) {
+                console.log(`Intento ${attempt} falló:`, error.message);
+                
+                if (error.message.includes('429')) {
+                    // Rate limit excedido
+                    const delay = Math.min(1000 * Math.pow(2, attempt - 1), 10000); // Backoff exponencial, máximo 10s
+                    console.log(`Rate limit excedido. Esperando ${delay}ms antes del siguiente intento...`);
+                    
+                    if (attempt < retries) {
+                        addSystemMessage(`⏳ Límite de solicitudes excedido. Esperando ${delay/1000}s antes de reintentar...`);
+                        await new Promise(resolve => setTimeout(resolve, delay));
+                        continue;
+                    }
+                } else if (error.message.includes('500') || error.message.includes('502') || error.message.includes('503')) {
+                    // Error del servidor
+                    const delay = 2000 * attempt;
+                    console.log(`Error del servidor. Esperando ${delay}ms...`);
+                    
+                    if (attempt < retries) {
+                        addSystemMessage(`⚠️ Error del servidor. Reintentando en ${delay/1000}s...`);
+                        await new Promise(resolve => setTimeout(resolve, delay));
+                        continue;
+                    }
+                }
+                
+                // Si es el último intento o un error no recuperable, lanzar el error
+                if (attempt === retries) {
+                    throw error;
+                }
+            }
+        }
+    }
+    
+    /**
+     * Función para agregar solicitud a la cola
+     * @param {Function} requestFunction - Función de solicitud
+     * @param {string} type - Tipo de solicitud para logging
+     * @returns {Promise} - Resultado de la solicitud
+     */
+    async function queueRequest(requestFunction, type = 'request') {
+        return new Promise((resolve, reject) => {
+            requestQueue.push({
+                function: requestFunction,
+                resolve,
+                reject,
+                type,
+                timestamp: Date.now()
+            });
+            
+            processQueue();
+        });
+    }
+    
+    
+    /**
+     * Función para procesar la cola de solicitudes
+     */
+    async function processQueue() {
+        if (isProcessingRequest || requestQueue.length === 0) {
+            return;
+        }
+        
+        isProcessingRequest = true;
+        
+        while (requestQueue.length > 0) {
+            const request = requestQueue.shift();
+            
+            try {
+                // Pequeña pausa entre solicitudes para evitar rate limiting
+                if (requestQueue.length > 0) {
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                }
+                
+                const result = await makeRequestWithRetry(request.function);
+                request.resolve(result);
+            } catch (error) {
+                request.reject(error);
+            }
+        }
+        
+        isProcessingRequest = false;
+    }
+    
+    
+    
+    /**
+     * Función para mostrar el modal de historial
+     */
+    function showHistoryModal() {
+        const modal = document.getElementById('history-modal');
+        if (modal) {
+            modal.style.display = 'flex';
+            loadHistoryList();
+        }
+    }
+    
+    /**
+     * Función para cerrar un modal
+     * @param {HTMLElement} modal - Elemento del modal a cerrar
+     */
+    function closeModal(modal) {
+        if (modal) {
+            modal.style.display = 'none';
+        }
+    }
+    
+    
+    /**
+     * Función para cargar la lista de historial
+     */
+    function loadHistoryList() {
+        const historyList = document.getElementById('history-list');
+        if (!historyList) return;
+        
+        historyList.innerHTML = '';
+        
+        if (chatHistory.length === 0) {
+            historyList.innerHTML = '<p style="text-align: center; color: #00aa00; font-style: italic;">No hay conversaciones guardadas</p>';
+            return;
+        }
+        
+        chatHistory.forEach(chat => {
+            const historyItem = document.createElement('div');
+            historyItem.classList.add('history-item');
+            historyItem.innerHTML = `
+                <div class="history-item-header">
+                    <div class="history-item-name">${chat.name}</div>
+                    <div class="history-item-date">${chat.date}</div>
+                </div>
+                <div class="history-item-preview">${chat.preview}</div>
+                <div class="history-item-actions">
+                    <button class="history-action-btn" onclick="loadChat(${chat.id})">
+                        <i class="fas fa-folder-open"></i> Cargar
+                    </button>
+                    <button class="history-action-btn" onclick="exportChat(${chat.id})">
+                        <i class="fas fa-download"></i> Exportar
+                    </button>
+                    <button class="history-action-btn" onclick="deleteChat(${chat.id})">
+                        <i class="fas fa-trash"></i> Eliminar
+                    </button>
+                </div>
+            `;
+            historyList.appendChild(historyItem);
+        });
+    }
+    
+    /**
+     * Función para cargar una conversación del historial
+     * @param {number} chatId - ID de la conversación
+     */
+    window.loadChat = function(chatId) {
+        const chat = chatHistory.find(c => c.id === chatId);
+        if (!chat) return;
+        
+        // Confirmar si hay conversación actual
+        if (currentConversation.length > 0) {
+            if (!confirm('¿Estás seguro de que quieres cargar esta conversación? Se perderá la conversación actual.')) {
+                return;
+            }
+        }
+        
+        // Cargar conversación
+        currentConversation = [...chat.conversation];
+        selectedModel = chat.model;
+        
+        // Actualizar UI
+        document.getElementById('model-selector').value = selectedModel;
+        updateModelDisplay(getModelDisplayName(selectedModel));
+        
+        // Limpiar y reconstruir chat
+        terminalBody.innerHTML = '';
+        reconstructChatFromHistory();
+        
+        // Cerrar modal
+        closeModal(document.getElementById('history-modal'));
+        
+        addSystemMessage(`📂 Conversación cargada: "${chat.name}"`);
+    };
+    
+    /**
+     * Función para reconstruir el chat desde el historial
+     */
+    function reconstructChatFromHistory() {
+        currentConversation.forEach((message, index) => {
+            if (message.role === 'user' && message.parts && message.parts[0] && message.parts[0].text) {
+                addMessage(message.parts[0].text, 'user');
+            } else if (message.role === 'model' && message.parts && message.parts[0] && message.parts[0].text) {
+                addMessage(message.parts[0].text, 'ai', true); // Mostrar botón de copiar para respuestas del historial
+            }
+        });
+    }
+    
+    /**
+     * Función para exportar una conversación
+     * @param {number} chatId - ID de la conversación
+     */
+    window.exportChat = function(chatId) {
+        const chat = chatHistory.find(c => c.id === chatId);
+        if (!chat) return;
+        
+        const exportData = {
+            name: chat.name,
+            date: chat.date,
+            model: chat.model,
+            conversation: chat.conversation
+        };
+        
+        const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `chat-${chat.name.replace(/[^a-zA-Z0-9]/g, '_')}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    };
+    
+    /**
+     * Función para eliminar una conversación
+     * @param {number} chatId - ID de la conversación
+     */
+    window.deleteChat = function(chatId) {
+        if (!confirm('¿Estás seguro de que quieres eliminar esta conversación?')) {
+            return;
+        }
+        
+        chatHistory = chatHistory.filter(c => c.id !== chatId);
+        saveHistory();
+        loadHistoryList();
+    };
+    
+    
+    // ==================== FUNCIONES DE UTILIDAD ====================
+    
+    /**
+     * Convierte el nombre interno del modelo a un nombre amigable para mostrar
+     * @param {string} model - Modelo interno (ej: 'gemini-2.0-flash')
+     * @returns {string} - Nombre de visualización (ej: 'Gemini 2.0 Flash')
+     */
+    function getModelDisplayName(model) {
+        const modelNames = {
+            'gemini-2.0-flash': 'Gemini 2.0 Flash',
+            'gemini-1.5-flash': 'Gemini 1.5 Flash',
+            'gemini-1.5-pro': 'Gemini 1.5 Pro',
+            'gemini-1.0-pro': 'Gemini 1.0 Pro'
+        };
+        return modelNames[model] || model;
+    }
+    
+    // ==================== FUNCIONES DE PERSISTENCIA ====================
+    
+    /**
+     * Función para cargar configuración guardada
+     */
+    function loadSavedSettings() {
+        // Cargar historial
+        const savedHistory = localStorage.getItem('gemini-chat-history');
+        if (savedHistory) {
+            try {
+                chatHistory = JSON.parse(savedHistory);
+            } catch (e) {
+                console.error('Error cargando historial:', e);
+                chatHistory = [];
+            }
+        }
+    }
+    
+    /**
+     * Función para guardar historial
+     */
+    function saveHistory() {
+        localStorage.setItem('gemini-chat-history', JSON.stringify(chatHistory));
+    }
+    
 });
